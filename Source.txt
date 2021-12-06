@@ -1,0 +1,92 @@
+// ==UserScript==
+// @name         Discord Custom
+// @namespace    http://tampermonkey.net/
+// @version      3.1
+// @description  try to take over the world!
+// @author       BraveKek
+// @match        https://discord.com/*
+// @match        https://discord.com/channel/*
+// @require http://code.jquery.com/jquery-3.5.1.min.js
+// @grant        none
+// @run-at       document-end
+// ==/UserScript==
+
+/* Avoid modifying any line has not comments next to it comment lines start with // or /* */
+var $ = window.jQuery;
+const none = 'none';
+const font_type = "cursive" // customize a font type for the entire page. only web safe fonts are supported, you may google "web safe fonts" for more details
+const brightness = 100; // controls the brighness of the page, minimum value is 0 and the maximum is 100.
+const imageUrl = "https://cdn.discordapp.com/attachments/691199564262146061/895179210392481792/undefined_-_Imgur.gif"; //change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
+/* the image may not work if you're using unsupported/ not well known website url so we recommend uploading images on discord to avoid experiencing unpleasant issues */
+const cursor = "https://cdn.discordapp.com/attachments/691199564262146061/913052994013122640/pngegg.png"; //image of the custom cursor the size preferred to be 128px*128px make sure it's uploaded on discord because other websites might get blocked automatically by discord
+const auto_track = "hsl(1000,calc(var(--saturation-factor, 6)*9%),9%)";
+const online = '255,111,255';//rgb value of online status leave it empty do use the default
+const offline = '255,255,255'; //rgb value of offline status leave it empty to use the default
+const dnd = '0,0,250'; //rgb value of dont disturb status leave it empty to use the default
+function go(){
+ 'use strict';
+   $('head').append('<style>'+
+                    '.theme-dark {'+
+                    '--background-primary:transparent        ;'+ //compositor color 0
+                    '--background-secondary:transparent         ;'+ //compository color 1
+                    '--background-tertiary:none           ;'+ //compository color  2
+                   ' --background-accent:none            ; '+ //compository color  3
+                   ' --background-secondary-alt:none          ;'+ //compository color  4
+                    ' --text-muted:white                       ;'+  // color of placeholders, some headers and message time
+                    '--text-normal:white                         ;'+ // text color of the messages
+                    '--text-muted:white                          ;'+ // color of placeholders, some headers and message time
+                    '--scrollbar-auto-thumb:rgba(46, 49, 49, 1)              ;'+ //scroll button color
+                    '--scrollbar-auto-track:'+none+'              ;'+//scroll line use auto_track to keep it visible or none to disable it unfortunately it's not possible to customize it yet
+                    '}' +
+                     '.applicationStore-1pNvnv{'+
+                    'background-color:transparent                   ;' +//color of nitro page recommendation : use transparent instead of none here
+                    '}'+
+                     '.scrollableContainer-2NUZem{'+
+                    'background:transparent                         ;'+ //typing-box
+                    '}'+
+                      '.tabBody-3YRQ8W{'+
+                    'background-image:0%;'+
+                    '}'+
+                    '::selection {background-color:#982C3B;}'  //color of any selection done by mouse
+                    +
+                  '.theme-dark .container-1D34oG{'+
+                    'background-color:transparent                   ;}'+ //color of friends page recommendation : use transparent instead of none here
+                    '.ready-36e6Vk{'+
+
+                    '}'+
+                      '.scroller-1Bvpku{'+
+                    'background-color:rgba(46, 49, 49, 0.1)         ;}'+ //Server lists vertical bar color
+                     '.members-1998pB{'+
+                    'background-color:transparent                    ;}'+ //Server Members List color
+
+                    '.embedFull-2tM8--{'+
+    'border-left: 4px solid black                                    ;'+
+   ' background: transparent                                         ;}'+ //embed box background color
+
+                   '.chatContent-a9vAAp{'+
+   ' background-color: transparent                                    ;}'+ //color of middle section of the app where send messages being sent
+                   +
+                    '.container-1r6BKw.themed-ANHk51{'+
+                    'background-color: transparent                    ;}' // customization of the upper most bar of the page which contains the channel name and search bar
+                   +
+                   'img,.clickable-3Ya1ho {cursor:'+ 'url('+cursor+'),auto}'+
+                 '</style>');
+
+     $('body').css('--text-link','pink'); //color of urls
+     $('body').css('background-image', 'url(' + imageUrl + ')');
+    $('body').css('background-size', 'cover');
+    $('body').css('filter','brightness('+brightness+'%)');
+    $('body').css('font-family',font_type);
+    $('body').css('cursor', 'url(https://media.discordapp.net/attachments/691199564262146061/911176926767480862/7-70485_computer-mouse-cursor-free-png-image-custom-mouse.png), pointer;');
+    $('body').css('cursor','url('+cursor+'),auto')
+    $(document).ready(function() { setInterval(function () {for (var l of document.querySelectorAll('div.graphicPrimary-1I8l6r img, .emoji')){l.addEventListener('click',function () {var t= this.src[this.src.length-4]=='='?this.src.slice(0,this.src.length-3)+'48':this.src.slice(0,this.src.length-1)+'8'; navigator.clipboard.writeText(t); console.log(this.src);});}let online_l =  $('rect[mask="url(#svg-mask-status-online)"]') ; for (let x of online_l) {if(online.length==0)break; x.setAttribute('fill','rgb('+online+')');} online_l =  $('rect[mask="url(#svg-mask-status-offline)"]') ; for (let x of online_l) {if(offline.length==0)break; x.setAttribute('fill','rgb('+offline+')');}online_l =  $('rect[mask="url(#svg-mask-status-dnd)"]') ; for (let x of online_l) {if(dnd.length==0)break; x.setAttribute('fill','rgb('+dnd+')');}},1000); });
+
+
+    //setInterval(function () {for (l of document.querySelectorAll('div.graphicPrimary-1I8l6r img, .emoji')){l.addEventListener('click',function () {var t= this.src[this.src.length-4]=='='?this.src.slice(0,this.src.length-3)+'48':this.src.slice(0,this.src.length-1)+'8'; navigator.clipboard.writeText(t); console.log(this.src);});}},1000)
+
+
+
+
+
+}
+go();
