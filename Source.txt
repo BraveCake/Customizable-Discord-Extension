@@ -41,16 +41,26 @@ function go(){
                      '.applicationStore-1pNvnv{'+
                     'background-color:transparent                   ;' +//color of nitro page recommendation : use transparent instead of none here
                     '}'+
+                    '.scrollableContainer-15eg7h{'+
+                    'background:transparent;'+
+                    '}'
+                    +
                      '.scrollableContainer-2NUZem{'+
-                    'background:transparent                         ;'+ //typing-box
+                    'background:transparent                         ;'+ //Deprecated (might not work in the new version) typing-box
                     '}'+
-                      '.tabBody-3YRQ8W{'+
+                      '.tabBody-3YRQ8W{'+    //new typing
                     'background-image:0%;'+
+                    '}'+
+                                          '.theme-dark .container-2cd8Mz{'+    //the new friends page
+                    'background-color:transparent;'+
+                    '}'+
+                                                              '.applicationStore-2nk7Lo{'+    //the new nitro page
+                    'background-color:transparent;'+
                     '}'+
                     '::selection {background-color:#982C3B;}'  //color of any selection done by mouse
                     +
                   '.theme-dark .container-1D34oG{'+
-                    'background-color:transparent                   ;}'+ //color of friends page recommendation : use transparent instead of none here
+                    'background-color:transparent                   ;}'+ //color of friends page(Deprecated (might not work in the new version)  recommendation : use transparent instead of none here
                     '.ready-36e6Vk{'+
 
                     '}'+
@@ -79,11 +89,10 @@ function go(){
     $('body').css('font-family',font_type);
     $('body').css('cursor', 'url(https://media.discordapp.net/attachments/691199564262146061/911176926767480862/7-70485_computer-mouse-cursor-free-png-image-custom-mouse.png), pointer;');
     $('body').css('cursor','url('+cursor+'),auto')
-    $(document).ready(function() { setInterval(function () {for (var l of document.querySelectorAll('div.graphicPrimary-1I8l6r img, .emoji')){l.addEventListener('click',function () {var t= this.src[this.src.length-4]=='='?this.src.slice(0,this.src.length-3)+'48':this.src.slice(0,this.src.length-1)+'8'; navigator.clipboard.writeText(t); console.log(this.src);});}let online_l =  $('rect[mask="url(#svg-mask-status-online)"]') ; for (let x of online_l) {if(online.length==0)break; x.setAttribute('fill','rgb('+online+')');} online_l =  $('rect[mask="url(#svg-mask-status-offline)"]') ; for (let x of online_l) {if(offline.length==0)break; x.setAttribute('fill','rgb('+offline+')');}online_l =  $('rect[mask="url(#svg-mask-status-dnd)"]') ; for (let x of online_l) {if(dnd.length==0)break; x.setAttribute('fill','rgb('+dnd+')');}},1000); });
+    $(document).ready(function() { setInterval(function () {for (var l of document.querySelectorAll('div.graphicPrimary-1I8l6r img, .emoji')){l.addEventListener('click',function () {var t= this.src[this.src.length-4]=='='?this.src.slice(0,this.src.length-3)+'48':this.src.slice(0,this.src.length-1)+'8'; navigator.clipboard.writeText(t.replace('&quality=lossles8','')); console.log(this.src);});}let online_l =  $('rect[mask="url(#svg-mask-status-online)"]') ; for (let x of online_l) {if(online.length==0)break; x.setAttribute('fill','rgb('+online+')');} online_l =  $('rect[mask="url(#svg-mask-status-offline)"]') ; for (let x of online_l) {if(offline.length==0)break; x.setAttribute('fill','rgb('+offline+')');}online_l =  $('rect[mask="url(#svg-mask-status-dnd)"]') ; for (let x of online_l) {if(dnd.length==0)break; x.setAttribute('fill','rgb('+dnd+')');}},1000); });
 
 
     //setInterval(function () {for (l of document.querySelectorAll('div.graphicPrimary-1I8l6r img, .emoji')){l.addEventListener('click',function () {var t= this.src[this.src.length-4]=='='?this.src.slice(0,this.src.length-3)+'48':this.src.slice(0,this.src.length-1)+'8'; navigator.clipboard.writeText(t); console.log(this.src);});}},1000)
-
 
 
 
