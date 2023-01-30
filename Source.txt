@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Discord Custom
 // @namespace    http://tampermonkey.net/
-// @version      4
+// @version      5
 // @description  try to take over the world!
 // @author       BraveKek
 // @match       https://discord.com/*
@@ -17,8 +17,9 @@ const nitro = false; // set it to true if you use nitro it will disable copying 
 const none = 'none';
 const font_type = "cursive" // customize a font type for the entire page. only web safe fonts are supported, you may google "web safe fonts" for more details
 const brightness = 100; // controls the brighness of the page, minimum value is 0 and the maximum is 100.
-const imageUrl = "https://media.discordapp.net/attachments/691199564262146061/972072549846483004/unknown.png?width=1145&height=644"; //change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
+const imageUrl = "https://cdn.discordapp.com/attachments/810213552912203827/1057332241757372437/tumblr_7a9e0547a4db9a50a90693425007d682_4285046f_1280.gif"; //change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
 /* the image may not work if you're using unsupported/ not well known website url so we recommend uploading images on discord to avoid experiencing unpleasant issues */
+/* previous image : https://media.discordapp.net/attachments/691199564262146061/972072549846483004/unknown.png?width=1145&height=644" */
 const cursor = "https://cdn.discordapp.com/attachments/691199564262146061/913052994013122640/pngegg.png"; //image of the custom cursor the size preferred to be 128px*128px make sure it's uploaded on discord because other websites might get blocked automatically by discord
 const auto_track = "hsl(1000,calc(var(--saturation-factor, 6)*9%),9%)";
 const online = '255,111,255';//rgb value of online status leave it empty do use the default
@@ -31,7 +32,7 @@ var hideButton=1; //set it to zero if you dont want hide friends button
     successNotifier.style.cssText ="position:absolute; left:90%; top:90%; width:100px; height:100px;background-size:cover;border-radius:50%;visibility:hidden;"+"background-image:url('"+notificationImage+"')";
     document.body.appendChild(successNotifier);
     function hb(){
-         console.log("test");
+        // console.log("test");
     if (document.URL.startsWith("https://discord.com/channels/@me"))
         {
             if (hideButton!=1)
@@ -51,7 +52,7 @@ hide.innerHTML = "hide";
  'use strict';
    $('head').append('<style>'+
                     '.theme-dark {'+
-                    '--background-primary:transparent        ;'+ //compositor color 0
+                    '--background-primary:rgba(0,0,0,0.2)        ;'+ //compositor color 0
                     '--background-secondary:transparent         ;'+ //compository color 1
                     '--background-tertiary:none           ;'+ //compository color  2
                    ' --background-accent:none            ; '+ //compository color  3
@@ -59,6 +60,7 @@ hide.innerHTML = "hide";
                     ' --text-muted:white                       ;'+  // color of placeholders, some headers and message time
                     '--text-normal:white                         ;'+ // text color of the messages
                     '--text-muted:white                          ;'+ // color of placeholders, some headers and message time
+                    '--channeltextarea-background:transparent;' + //color of message typing box
                     '--scrollbar-auto-thumb:rgba(46, 49, 49, 1)              ;'+ //scroll button color
                     '--scrollbar-auto-track:'+none+'              ;'+//scroll line use auto_track to keep it visible or none to disable it unfortunately it's not possible to customize it yet
                     '}' +
@@ -107,7 +109,7 @@ hide.innerHTML = "hide";
                     '.theme-dark .background-fkKrXt{background:none;}'+
                  '.emojiItemDisabled-3VVnwp,.stickerUnsendable-PkQAxI{-webkit-filter;filter:none;}'+
                  '</style>');
-
+/* by bravecake */
      $('body').css('--text-link','pink'); //color of urls
      $('body').css('background-image', 'url(' + imageUrl + ')');
     $('body').css('background-size', 'cover');
