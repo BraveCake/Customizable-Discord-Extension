@@ -40,7 +40,8 @@ var hideButton=1; //set it to zero if you dont want hide friends button
 
            let hide= document.createElement("button");
 hide.innerHTML = "hide";
-            hide.onclick = ()=> $(".scroller-WSmht3.thin-31rlnD.scrollerBase-_bVAAt.fade-1R6FHN").toggle();
+            hide.style["border-radius"]="30px";
+            hide.onclick = ()=> $(".scroller-WSmht3.thin-RnSY0a.scrollerBase-1Pkza4.fade-27X6bG").toggle();
             $(".searchBar-3TnChZ")[0].appendChild(hide);
             hideButton=-1;
 
