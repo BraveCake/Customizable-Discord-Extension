@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Discord Custom
 // @namespace    http://tampermonkey.net/
-// @version      6
+// @version      7
 // @description  try to take over the world!
 // @author       BraveKek
 // @match       https://discord.com/*
@@ -18,7 +18,8 @@
 const nitro = false; // set it to true if you use nitro it will disable copying emojis into your clipboard
 const font_type = "cursive" // customize a font type for the entire page. only web safe fonts are supported, you may google "web safe fonts" for more details
 const brightness = 100; // controls the brighness of the page, minimum value is 0 and the maximum is 100.
-const imageUrl = "https://cdn.discordapp.com/attachments/815610760205565952/1094976704281329695/peakpx_1.jpg"; //change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
+const imageUrl = "https://cdn.discordapp.com/attachments/810213552912203827/1057328074431148042/367f918571959eb12d9143db08c39833.png?ex=65e74281&is=65d4cd81&hm=5f1ca7646f0d5eb62f09dc8e1eae0ce0f5e803f401de6a45900cbe15603f7f80&"
+      // "https://cdn.discordapp.com/attachments/815610760205565952/1094976704281329695/peakpx_1.jpg";  change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
 /* the image may not work if you're using unsupported/ not well known website url so we recommend uploading images on discord to avoid experiencing unpleasant issues */
 /* previous image : https://media.discordapp.net/attachments/691199564262146061/972072549846483004/unknown.png?width=1145&height=644" */
 const cursor = "https://cdn.discordapp.com/attachments/691199564262146061/913052994013122640/pngegg.png"; //image of the custom cursor the size preferred to be 128px*128px make sure it's uploaded on discord because other websites might get blocked automatically by discord
@@ -34,11 +35,26 @@ var hideButton=1; //set it to zero if you dont want hide friends button
 var $ = window.jQuery;
 const none = 'none';
 const auto_track = "hsl(1000,calc(var(--saturation-factor, 6)*9%),9%)";
+function preventDeletion(){
+    var x = new MutationObserver(function (e) {
+    if (e[0].removedNodes.length > 0) {
+        let target = e[0].target;
+        console.log("Deletion caught");
+        let removedNode = e[0].removedNodes[0];
+        let isSending = removedNode.innerHTML.includes("isSending__6e109")||  removedNode.innerHTML.includes("progress__41599") || removedNode.innerHTML.includes("divider__8cf56");
+        if(!isSending)
+          target.appendChild(e[0].removedNodes[0]);
+    }
+});
+
+x.observe(document.getElementsByClassName("scrollerInner__059a5")[0], { childList: true });
+}
+
 (function go(){
     var successNotifier= document.createElement("div");
     successNotifier.style.cssText ="position:absolute; left:90%; top:90%; width:100px; height:100px;background-size:cover;border-radius:50%;visibility:hidden;"+"background-image:url('"+notificationImage+"')";
     document.body.appendChild(successNotifier);
-    function hb(){
+    function addHidebutton(){
         // console.log("test");
     if (document.URL.startsWith("https://discord.com/channels/@me"))
         {
@@ -80,7 +96,7 @@ hide.innerHTML = "hide";
                     'background:transparent  !important;'+
                     '}'
                     +
-                    '.emojiItemDisabled__36cbf{' +
+                    '.emojiItemDisabled__36cbf,.stickerUnsendable__47eae{' +
                     'filter: grayscale(0%) !important;'+
                     '}'
 
@@ -131,8 +147,36 @@ hide.innerHTML = "hide";
     $('body').css('filter','brightness('+brightness+'%)');
     $('body').css('font-family',font_type);
     $('body').css('cursor','url('+cursor+'),auto');
-    $(document).ready(function() { setInterval(function () {hb();for (var l of document.querySelectorAll('button.emojiItemDisabled__36cbf')){l.addEventListener('click',function () {if(nitro)return; var t= this.firstChild.src[this.firstChild.src.length-4]=='='?this.firstChild.src.slice(0,this.firstChild.src.length-3)+'48':this.firstChild.src.slice(0,this.firstChild.src.length-1)+'8'; if(this.firstChild.dataset.type=='sticker')t=t.substr(0,t.length-2)+160;  navigator.clipboard.writeText(t.replace('&quality=lossles8','')); successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000); setTimeout(_=>$('.premiumPromoClose__11b8f,.upsellClose-72TQqH').click(),0); console.log(this.firstChild.src);});}let online_l =  $('rect[mask="url(#svg-mask-status-online)"]') ; for (let x of online_l) {if(online.length==0)break; x.setAttribute('fill','rgb('+online+')');} online_l =  $('rect[mask="url(#svg-mask-status-offline)"]') ; for (let x of online_l) {if(offline.length==0)break; x.setAttribute('fill','rgb('+offline+')');}online_l =  $('rect[mask="url(#svg-mask-status-dnd)"]') ; for (let x of online_l) {if(dnd.length==0)break; x.setAttribute('fill','rgb('+dnd+')');}},1000); });
-
+    $(document).ready(function() {
+        setInterval(function () {
+            addHidebutton();
+            for (var l of document.querySelectorAll('img.lockedEmoji__79818,.stickerAsset__00e6b')){
+                l = l.parentNode;
+                l.addEventListener('click',function () {
+                    if(nitro) return;
+                    var t= this.firstChild.src[this.firstChild.src.length-4]=='='?this.firstChild.src.slice(0,this.firstChild.src.length-3)+'48':this.firstChild.src.slice(0,this.firstChild.src.length-1)+'8';
+                    if(this.firstChild.dataset.type=='sticker')t=t.substr(0,t.length-2)+160;
+                    navigator.clipboard.writeText(t.replace('&quality=lossles8',''));
+                    successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000);
+                    setTimeout(_=>$('.premiumPromoClose__11b8f,.upsellClose__21f06').click(),0);
+                    console.log(this.firstChild.src);
+                });
+            }
+            let online_l =  $('rect[mask="url(#svg-mask-status-online)"]') ;
+            for (let x of online_l) {
+                if(online.length==0)break;
+                x.setAttribute('fill','rgb('+online+')');}
+            online_l =  $('rect[mask="url(#svg-mask-status-offline)"]') ;
+            for (let x of online_l) {
+                if(offline.length==0)break;
+                x.setAttribute('fill','rgb('+offline+')');}
+            online_l =  $('rect[mask="url(#svg-mask-status-dnd)"]') ;
+            for (let x of online_l)
+            {if(dnd.length==0)break;
+             x.setAttribute('fill','rgb('+dnd+')');
+            }
+        },1000); });
+   //navigation.addEventListener("navigate", e => {console.log("hi");setTimeout(preventDeletion, 2000);});
 
    
 
