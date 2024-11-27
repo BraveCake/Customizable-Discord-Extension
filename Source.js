@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Discord Custom
 // @namespace    http://tampermonkey.net/
-// @version      7
+// @version      8
 // @description  try to take over the world!
 // @author       BraveKek
 // @match       https://discord.com/*
@@ -13,12 +13,13 @@
 // @webRequest   {"selector":"https://discord.com/api/v9/channels/*/typing","action":"cancel"}
 // ==/UserScript==
 
+/* ability to hide you're typing doesn't work in manifest v3 */
 
 
 const nitro = false; // set it to true if you use nitro it will disable copying emojis into your clipboard
 const font_type = "cursive" // customize a font type for the entire page. only web safe fonts are supported, you may google "web safe fonts" for more details
 const brightness = 100; // controls the brighness of the page, minimum value is 0 and the maximum is 100.
-const imageUrl = "https://cdn.discordapp.com/attachments/810213552912203827/1057328074431148042/367f918571959eb12d9143db08c39833.png?ex=65e74281&is=65d4cd81&hm=5f1ca7646f0d5eb62f09dc8e1eae0ce0f5e803f401de6a45900cbe15603f7f80&"
+const imageUrl = "https://images-ext-1.discordapp.net/external/Lof33xo0fM2Qv3mdOH4g0pkQUDNGo70XqNoN8emkRlM/https/images.wallpapersden.com/image/download/anime-girl-looking-for-sunset_bmVsZmuUmZqaraWkpJRmbmpnrWZmZ2U.jpg?format=webp&"
       // "https://cdn.discordapp.com/attachments/815610760205565952/1094976704281329695/peakpx_1.jpg";  change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
 /* the image may not work if you're using unsupported/ not well known website url so we recommend uploading images on discord to avoid experiencing unpleasant issues */
 /* previous image : https://media.discordapp.net/attachments/691199564262146061/972072549846483004/unknown.png?width=1145&height=644" */
@@ -27,7 +28,7 @@ const online = '255,111,255';//rgb value of online status leave it empty do use 
 const offline = '255,255,255'; //rgb value of offline status leave it empty to use the default
 const dnd = '0,0,250'; //rgb value of dont disturb status leave it empty to use the default
 const notificationImage="https://media.discordapp.net/attachments/810213552912203827/1033314055634559026/pngwing.com.png?width=676&height=619"//URL of the image that will appear when you click on any emoji it is just for notification purpose
-var hideButton=1; //set it to zero if you dont want hide friends button
+var hideButton=1; //set it to zero if you dont want "hide friends" button
 
 
 /* Avoid modifying any line has not comments next to it comment lines start with // or /* */
@@ -64,8 +65,8 @@ x.observe(document.getElementsByClassName("scrollerInner__059a5")[0], { childLis
            let hide= document.createElement("button");
 hide.innerHTML = "hide";
             hide.style["border-radius"]="30px";
-            hide.onclick = ()=> $(".scroller__4b984.thin_b1c063.scrollerBase_dc3aa9.fade_ba0fa0").toggle();
-            $(".searchBar_e4ea2a")[0].appendChild(hide);
+            hide.onclick = ()=> $(".scroller__89969.thin_b1c063.scrollerBase_f742b2.fade_ba0fa0").toggle();
+            $(".searchBar_f0963d")[0].appendChild(hide);
             hideButton=-1;
 
         }
@@ -96,7 +97,7 @@ hide.innerHTML = "hide";
                     'background:transparent  !important;'+
                     '}'
                     +
-                    '.emojiItemDisabled__36cbf,.stickerUnsendable__47eae{' +
+                    '.emojiItemDisabled__36cbf,.stickerUnsendable_a708c4{' +
                     'filter: grayscale(0%) !important;'+
                     '}'
 
@@ -110,7 +111,7 @@ hide.innerHTML = "hide";
                                           '.theme-dark .container-2cd8Mz{'+    //the new friends page
                     'background-color:transparent  !important;'+
                     '}'+
-                                                              '.applicationStore-2nk7Lo{'+    //the new nitro page
+                                                              '.applicationStore-2nk7Lo,.shop_b31ed2{'+    //the new nitro page & store
                     'background-color:transparent !important;'+
                     '}'+
                     '::selection {background-color:#982C3B !important;}'  //color of any selection done by mouse
@@ -150,23 +151,36 @@ hide.innerHTML = "hide";
     $(document).ready(function() {
         setInterval(function () {
             addHidebutton();
-            for (var l of document.querySelectorAll('img.lockedEmoji__79818,.stickerAsset__00e6b')){
-                l = l.parentNode;
+            for (const l of document.querySelectorAll("button[data-type='emoji']")){
                 l.addEventListener('click',function () {
                     if(nitro) return;
-                    var t= this.firstChild.src[this.firstChild.src.length-4]=='='?this.firstChild.src.slice(0,this.firstChild.src.length-3)+'48':this.firstChild.src.slice(0,this.firstChild.src.length-1)+'8';
-                    if(this.firstChild.dataset.type=='sticker')t=t.substr(0,t.length-2)+160;
+                    let url = this.firstChild.src.substring(0,this.firstChild.src.lastIndexOf('='));
+                    let t = url+"=48";
                     navigator.clipboard.writeText(t.replace('&quality=lossles8',''));
                     successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000);
-                    setTimeout(_=>$('.premiumPromoClose__11b8f,.upsellClose__21f06').click(),0);
-                    console.log(this.firstChild.src);
+                    setTimeout(_=>$('[aria-label="Close"]').click(),0);
+                    console.log(t);
                 });
             }
+            for (let l of document.querySelectorAll("div[data-type='sticker']")){
+                l.addEventListener('click',function () {
+                    l = l.getElementsByTagName("img")[0];
+                    if(nitro) return;
+                    let url = l.src.substring(0,l.src.lastIndexOf('=',l.src.lastIndexOf('=')-1));
+                    let t = url+"=240&quality=lossless";
+                    navigator.clipboard.writeText(t.replace('&quality=lossles8',''));
+                    successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000);
+                    setTimeout(_=>$('.upsellClose_b8772d').click(),0);
+                    console.log(t);
+                });
+            }
+
+
             let online_l =  $('rect[mask="url(#svg-mask-status-online)"]') ;
             for (let x of online_l) {
                 if(online.length==0)break;
-                x.setAttribute('fill','rgb('+online+')');}
-            online_l =  $('rect[mask="url(#svg-mask-status-offline)"]') ;
+               x.setAttribute('fill','rgb('+online+')');}
+            online_l  =  $('rect[mask="url(#svg-mask-status-offline)"]') ;
             for (let x of online_l) {
                 if(offline.length==0)break;
                 x.setAttribute('fill','rgb('+offline+')');}
