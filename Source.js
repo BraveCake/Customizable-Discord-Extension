@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Discord Custom
 // @namespace    http://tampermonkey.net/
-// @version      8
+// @version      8.1
 // @description  try to take over the world!
 // @author       BraveKek
 // @match       https://discord.com/*
@@ -13,8 +13,7 @@
 // @webRequest   {"selector":"https://discord.com/api/v9/channels/*/typing","action":"cancel"}
 // ==/UserScript==
 
-/* ability to hide you're typing doesn't work in manifest v3 */
-
+/* ability to hide you're typing (stealth mode) doesn't work in manifest v3 */
 
 const nitro = false; // set it to true if you use nitro it will disable copying emojis into your clipboard
 const font_type = "cursive" // customize a font type for the entire page. only web safe fonts are supported, you may google "web safe fonts" for more details
@@ -153,8 +152,14 @@ hide.innerHTML = "hide";
             addHidebutton();
             for (const l of document.querySelectorAll("button[data-type='emoji']")){
                 l.addEventListener('click',function () {
+                    let url = this.firstChild.src;
                     if(nitro) return;
-                    let url = this.firstChild.src.substring(0,this.firstChild.src.lastIndexOf('='));
+                    if(url.lastIndexOf("animated=true")!=-1){  //animated emoji
+                      url= url.strip("animated=true");
+                      url = url.replace(".webp",".gif");
+                    }
+
+                    url = this.firstChild.src.substring(0,url.lastIndexOf('size='));
                     let t = url+"=48";
                     navigator.clipboard.writeText(t.replace('&quality=lossles8',''));
                     successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000);
