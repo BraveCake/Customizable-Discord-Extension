@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Discord Custom
 // @namespace    http://tampermonkey.net/
-// @version      8.1
+// @version      8.2
 // @description  try to take over the world!
 // @author       BraveKek
 // @match       https://discord.com/*
@@ -64,8 +64,9 @@ x.observe(document.getElementsByClassName("scrollerInner__059a5")[0], { childLis
            let hide= document.createElement("button");
 hide.innerHTML = "hide";
             hide.style["border-radius"]="30px";
-            hide.onclick = ()=> $(".scroller__89969.thin_b1c063.scrollerBase_f742b2.fade_ba0fa0").toggle();
-            $(".searchBar_f0963d")[0].appendChild(hide);
+            const messageSidebar= $("nav[aria-label='Private channels']");
+            hide.onclick = ()=> messageSidebar.children().eq(1).toggle();
+            messageSidebar.children().first().append(hide);
             hideButton=-1;
 
         }
@@ -155,12 +156,11 @@ hide.innerHTML = "hide";
                     let url = this.firstChild.src;
                     if(nitro) return;
                     if(url.lastIndexOf("animated=true")!=-1){  //animated emoji
-                      url= url.strip("animated=true");
+                      url= url.trim("animated=true");
                       url = url.replace(".webp",".gif");
                     }
-
-                    url = this.firstChild.src.substring(0,url.lastIndexOf('size='));
-                    let t = url+"=48";
+                    url = url.substring(0,url.lastIndexOf('size='));
+                    let t = url+"size=48";
                     navigator.clipboard.writeText(t.replace('&quality=lossles8',''));
                     successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000);
                     setTimeout(_=>$('[aria-label="Close"]').click(),0);
