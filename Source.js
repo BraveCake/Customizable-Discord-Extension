@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Discord Custom
 // @namespace    http://tampermonkey.net/
-// @version      8.2
+// @version      8.3
 // @description  try to take over the world!
 // @author       BraveKek
 // @match       https://discord.com/*
@@ -18,7 +18,7 @@
 const nitro = false; // set it to true if you use nitro it will disable copying emojis into your clipboard
 const font_type = "cursive" // customize a font type for the entire page. only web safe fonts are supported, you may google "web safe fonts" for more details
 const brightness = 100; // controls the brighness of the page, minimum value is 0 and the maximum is 100.
-const imageUrl = "https://images-ext-1.discordapp.net/external/Lof33xo0fM2Qv3mdOH4g0pkQUDNGo70XqNoN8emkRlM/https/images.wallpapersden.com/image/download/anime-girl-looking-for-sunset_bmVsZmuUmZqaraWkpJRmbmpnrWZmZ2U.jpg?format=webp&"
+const imageUrl = "https://images-ext-1.discordapp.net/external/tFTLXB3kEoxc2oW0QnQqFUNbQEPvH-Qkmn8zBNpqeCM/https/ezgif.com/save/ezgif-3515925a22b5ae.gif"
       // "https://cdn.discordapp.com/attachments/815610760205565952/1094976704281329695/peakpx_1.jpg";  change the url to url of the image which you want to use as a background but before that make sure that you have all color values set as transparent or none
 /* the image may not work if you're using unsupported/ not well known website url so we recommend uploading images on discord to avoid experiencing unpleasant issues */
 /* previous image : https://media.discordapp.net/attachments/691199564262146061/972072549846483004/unknown.png?width=1145&height=644" */
@@ -76,6 +76,8 @@ hide.innerHTML = "hide";
         return;}
  'use strict';
    $('head').append('<style>'+
+                    '.visual-refresh.theme-dark, .visual-refresh .theme-dark{--background-base-low:rgba(0,0,0,0);--background-base-lower:rgba(0,0,0,0);--background-surface-higher:rgba(0,0,0,0);--background-base-lowest:rgba(0,0,0,0);--bg-base-tertiary:rgba(0,0,0,0);--background-secondary-alt:rgba(0,0,0,0);--bg-base-secondary:rgba(0,0,0,0);--bg-overlay-chat:rgba(0,0,0,0);--bg-overlay-floating:rgba(0,0,0,0);--bg-overlay-2:rgba(0,0,0,0);--background-surface-high:rgba(0,0,0,0);}'+
+                    '.stickerUnsendable_c6367b {filter:grayscale(0%);}'+
                     '.theme-dark {'+
                     '--background-primary:rgba(0,0,0,0.2) !important        ;'+ //compositor color 0
                     '--background-secondary:transparent         !important;'+ //compository color 1
@@ -175,7 +177,7 @@ hide.innerHTML = "hide";
                     let t = url+"=240&quality=lossless";
                     navigator.clipboard.writeText(t.replace('&quality=lossles8',''));
                     successNotifier.style.visibility="visible"; setTimeout(_=>successNotifier.style.visibility="hidden",2000);
-                    setTimeout(_=>$('.upsellClose_b8772d').click(),0);
+                    setTimeout(_=>$('.upsellClose__4006b').click(),0);
                     console.log(t);
                 });
             }
